@@ -1,79 +1,70 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Changes made with CI tools #1
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
+  <v-container fluid>
+  <v-row justify="center">
+    <!--Does not hide at 750 px ?-->
+    <v-col cols="2" class="pl-0 pt-0 hidden-sm-and-down">
+      <v-sheet>
+        <v-list color="transparent">
+          <v-list-item
+            v-for="n in 5"
+            :key="n"
+            link
           >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
+            <v-list-item-content>
+              <v-list-item-title>
+                List Item {{ n }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider class="my-2"></v-divider>
+
+          <v-list-item
+            link
+            color="grey lighten-4"
           >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+            <v-list-item-content>
+              <v-list-item-title>
+                Refresh
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-sheet>
+    </v-col>
+    <v-col cols="10">
+      <template v-for="(category,n) in categories">
+        <strong>{{ category.name }}</strong>
+        <v-container>
+          <v-row justify="start">
+            <v-col v-for="(product, n) in categoryProducts(category.name.toLowerCase())" key="n" md="3">
+              <v-card width="344px">
+                <v-img :src="product.images['0']" height="250px"></v-img>
+                <v-card-title class="h6" >
+                  {{product.name}}
+                </v-card-title>
+
+                <v-card-subtitle class="body-1" color="secondary">
+                  {{product.price}} €
+                </v-card-subtitle>
+
+                <v-card-actions>
+                  <v-btn color="accent" text>
+                    Add to cart
+                  </v-btn>
+                  <v-spacer/>
+                  <v-btn color="accent" icon>
+                    <v-icon>mdi-share-variant</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
     </v-col>
   </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -84,6 +75,20 @@ export default {
   components: {
     Logo,
     VuetifyLogo
+  },
+  data() {
+    return {
+    }
+  },
+  methods: {
+    categoryProducts(category){
+      return this.products.filter(product => product.category === category);
+    }
+  },
+  async asyncData(context) {
+    const categories = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/categories`)
+    const products = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/products`)
+    return {categories: categories, products:products}
   }
 }
 </script>

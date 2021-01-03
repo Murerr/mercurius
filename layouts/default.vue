@@ -3,6 +3,7 @@
     <v-navigation-drawer
       v-if="$vuetify.breakpoint.smAndDown"
       v-model="drawer"
+      hide-overlay
       app>
       <v-list>
         <v-list-item
@@ -51,16 +52,19 @@
       </v-btn>
     </v-app-bar>
     <v-main>
-      <v-container>
-        <nuxt />
-      </v-container>
+        <nuxt keep-alive/>
     </v-main>
     <v-footer  app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
 </template>
+<style>
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+}
 
+</style>
 <script>
 export default {
   computed:{
