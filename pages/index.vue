@@ -3,58 +3,41 @@
   <v-row justify="center">
     <!--Does not hide at 750 px ?-->
     <v-col cols="2" class="pl-0 pt-0 hidden-sm-and-down">
-      <v-sheet>
+      <v-sheet color="primary" dark>
         <v-list color="transparent">
           <v-list-item
-            v-for="n in 5"
+            v-for="(category) in categories"
             :key="n"
             link
           >
             <v-list-item-content>
               <v-list-item-title>
-                List Item {{ n }}
+                {{ category.name }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
-          <v-divider class="my-2"></v-divider>
-
-          <v-list-item
-            link
-            color="grey lighten-4"
-          >
-            <v-list-item-content>
-              <v-list-item-title>
-                Refresh
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
         </v-list>
       </v-sheet>
     </v-col>
     <v-col cols="10">
-      <template v-for="(category,n) in categories">
+      <template v-for="(category) in categories">
         <strong>{{ category.name }}</strong>
-        <v-container>
+        <v-container fluid>
           <v-row justify="start">
-            <v-col v-for="(product, n) in categoryProducts(category.name.toLowerCase())" key="n" md="3">
-              <v-card width="344px">
-                <v-img :src="product.images['0']" height="250px"></v-img>
+            <v-col v-for="(product, col_index) in categoryProducts(category.name.toLowerCase())" key="col_index" md="3">
+              <v-card height="100%" class="d-flex flex-column">
+                <v-img :src="product.images['0']" width="100%"></v-img>
                 <v-card-title class="h6" >
                   {{product.name}}
                 </v-card-title>
-
-                <v-card-subtitle class="body-1" color="secondary">
-                  {{product.price}} €
-                </v-card-subtitle>
-
+                <v-spacer></v-spacer>
                 <v-card-actions>
-                  <v-btn color="accent" text>
+                  <p class="text-body-1 font-weight-bold red--text text--darken-1 pl-2 mb-0">{{product.price}}€</p>
+                  <v-spacer></v-spacer>
+                  <v-btn color="secondary" text>
                     Add to cart
-                  </v-btn>
-                  <v-spacer/>
-                  <v-btn color="accent" icon>
-                    <v-icon>mdi-share-variant</v-icon>
+                    <v-icon>mdi-cart-plus</v-icon>
                   </v-btn>
                 </v-card-actions>
               </v-card>

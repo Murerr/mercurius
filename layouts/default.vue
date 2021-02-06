@@ -4,8 +4,9 @@
       v-if="$vuetify.breakpoint.smAndDown"
       v-model="drawer"
       hide-overlay
-      app>
-      <v-list>
+      app
+      color="primary">
+      <v-list color="primary" dark>
         <v-list-item
           v-for="(item, i) in drawerItems"
           :key="i"
@@ -23,7 +24,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar color="primary" app dark>
       <v-app-bar-nav-icon v-show="$vuetify.breakpoint.smAndDown" @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" class="d-none d-sm-block" style="width: 100%; max-width: 120px"/>
       <v-container fluid :class="$vuetify.breakpoint.xs ? 'px-0' :'' " >
@@ -42,11 +43,11 @@
         ></v-autocomplete>
       </v-container>
       <v-spacer />
-      <v-btn :icon="$vuetify.breakpoint.xs" depressed to="/login">
+      <v-btn color="transparent" :icon="$vuetify.breakpoint.xs" depressed to="/login">
         <v-icon>mdi-account</v-icon>
         {{loginText}}
       </v-btn>
-      <v-btn :icon="$vuetify.breakpoint.xs" depressed to="/cart" nuxt>
+      <v-btn color="transparent" :icon="$vuetify.breakpoint.xs" depressed to="/cart" nuxt>
         <v-icon>mdi-cart</v-icon>
         {{cartText}}
       </v-btn>
