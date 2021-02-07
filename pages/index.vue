@@ -6,8 +6,8 @@
       <v-sheet color="primary" dark>
         <v-list color="transparent">
           <v-list-item
-            v-for="(category) in categories"
-            :key="n"
+            v-for="(category,category_index) in categories"
+            :key="category_index"
             link
           >
             <v-list-item-content>
@@ -28,16 +28,16 @@
             <v-col v-for="(product, col_index) in categoryProducts(category.name.toLowerCase())" key="col_index" md="3">
               <v-card height="100%" class="d-flex flex-column">
                 <v-img :src="product.images['0']" width="100%"></v-img>
-                <v-card-title class="h6" >
+                <v-card-title class="text-h6" >
                   {{product.name}}
                 </v-card-title>
                 <v-spacer></v-spacer>
                 <v-card-actions>
                   <p class="text-body-1 font-weight-bold red--text text--darken-1 pl-2 mb-0">{{product.price}}€</p>
                   <v-spacer></v-spacer>
-                  <v-btn color="secondary" text>
-                    Add to cart
+                  <v-btn @click="addToCart(product)" color="secondary" text>
                     <v-icon>mdi-cart-plus</v-icon>
+                    Add to cart
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -53,6 +53,7 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import { mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -66,12 +67,26 @@ export default {
   methods: {
     categoryProducts(category){
       return this.products.filter(product => product.category === category);
-    }
+    },
+    addToCart (product) {
+      this.$store.commit('cart/add', product)
+    },
+    ...mapMutations({
+      toggle: 'cart/toggle'
+    })
+  },
+  created() {
+    // console.log(this.$store.state.cart.list);
   },
   async asyncData(context) {
-    const categories = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/categories`)
-    const products = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/products`)
+    const categories = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/categories`).catch(e => {
+      console.log(e)
+    })
+    const products = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/products`).catch(e => {
+      console.log(e)
+    })
     return {categories: categories, products:products}
+
   }
 }
 </script>
