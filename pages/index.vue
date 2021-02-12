@@ -79,19 +79,10 @@ export default {
     addToCart (product) {
       this.$store.commit('cart/add', product)
     },
-    ...mapMutations({
-      toggle: 'cart/toggle'
-    })
   },
   created() {
-    // console.log(this.$store.state.cart.list);
   },
   async asyncData(context) {
-
-    /*const products = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/products`).catch(e => {
-      console.log(e)
-    });*/
-
     let [categories, products] = await Promise.all([
       context.$axios.$get('/api/categories')
         .catch(error => console.log(error)),

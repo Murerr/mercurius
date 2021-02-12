@@ -1,6 +1,6 @@
 <template>
 	<v-container v-if="cart.length > 0">
-    <v-card class="d-flex flex-column mt-4 mb-4" width="100%" v-for="(product, productIndex) in cart">
+    <v-card class="d-flex flex-column mt-4 mb-4" width="100%" v-for="(product, productIndex) in cart" :key="productIndex">
       <v-row class="fill-height" align="start" justify="start">
         <v-col justify="center" md="2">
           <v-img :src="product.images['0']" max-width="250px" />
