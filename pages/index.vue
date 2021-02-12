@@ -22,13 +22,13 @@
     </v-col>
     <v-col cols="10">
       <template v-for="(category) in categories">
-        <strong>{{ category.name }}</strong>
+        <strong>{{ category.name }}</strong><hr>
         <v-container fluid>
           <v-row justify="start">
             <v-col v-for="(product, col_index) in categoryProducts(category.name.toLowerCase())" key="col_index" md="3">
               <v-card height="100%" class="d-flex flex-column">
                 <v-img :src="product.images['0']" width="100%"></v-img>
-                <v-card-title class="text-h6" >
+                <v-card-title class="text-h6 text-justify" >
                   {{product.name}}
                 </v-card-title>
                 <v-spacer></v-spacer>
@@ -49,11 +49,19 @@
   </v-row>
   </v-container>
 </template>
-
+<style>
+.text-justify {
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+</style>
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import { mapMutations } from 'vuex'
+import error from "@/layouts/error";
 
 export default {
   components: {
@@ -79,12 +87,18 @@ export default {
     // console.log(this.$store.state.cart.list);
   },
   async asyncData(context) {
-    const categories = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/categories`).catch(e => {
+
+    /*const products = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/products`).catch(e => {
       console.log(e)
-    })
-    const products = await context.$axios.$get(`https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/products`).catch(e => {
-      console.log(e)
-    })
+    });*/
+
+    let [categories, products] = await Promise.all([
+      context.$axios.$get('/api/categories')
+        .catch(error => console.log(error)),
+      context.$axios.$get('/api/products')
+        .catch(error => console.log(error))
+    ]);
+
     return {categories: categories, products:products}
 
   }
