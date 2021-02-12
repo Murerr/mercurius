@@ -28,10 +28,7 @@ export const mutations = {
   },
   removeProductFromCart(state, index) {
     state.list.splice(index, 1)
-  },
-  toggle(state, todo) {
-    todo.done = !todo.done
-  },
+  }
 }
 export const getters = {
   getProductById: (state) => (index) => {
