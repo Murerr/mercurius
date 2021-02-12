@@ -11,8 +11,7 @@
           v-for="(item, i) in drawerItems"
           :key="i"
           :to="item.to"
-          router
-          exact
+          nuxt
         >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -26,7 +25,9 @@
 
     <v-app-bar color="primary" app dark>
       <v-app-bar-nav-icon v-show="$vuetify.breakpoint.smAndDown" @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" class="d-none d-sm-block" style="width: 100%; max-width: 120px"/>
+      <v-toolbar-title class="d-none d-sm-block pa-0" style="width: 100%; max-width: 120px">
+        <v-btn to="/" width="100%" plain nuxt>{{title}}</v-btn>
+      </v-toolbar-title>
       <v-container fluid :class="$vuetify.breakpoint.xs ? 'px-0' :'' " >
         <v-autocomplete
           v-model="select"
@@ -47,13 +48,15 @@
         <v-icon>mdi-account</v-icon>
         {{loginText}}
       </v-btn>
-      <v-btn color="transparent" :icon="$vuetify.breakpoint.xs" depressed to="/cart" nuxt>
-        <v-icon>mdi-cart</v-icon>
-        {{cartText}}
-      </v-btn>
+        <v-btn color="transparent" :icon="$vuetify.breakpoint.xs" depressed to="/cart" nuxt>
+        <v-badge left color="accent" :content="cartBadge">
+          <v-icon>mdi-cart</v-icon>
+          {{cartText}}
+        </v-badge>
+        </v-btn>
     </v-app-bar>
     <v-main>
-        <nuxt keep-alive/>
+       <nuxt keep-alive/>
     </v-main>
     <v-footer  app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
@@ -74,6 +77,10 @@ export default {
     },
     cartText () {
       return this.$vuetify.breakpoint.xs ? '' : 'Cart'
+    },
+    cartBadge () {
+      // TODO getstorageItemList
+      return this.$store.state.cart.list.length > 0 ? this.$store.state.cart.list.length : '0'
     },
   },
   data () {

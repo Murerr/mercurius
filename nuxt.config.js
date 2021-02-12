@@ -2,7 +2,8 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
-  target: 'static',
+  target: 'server',
+  ssr: true,
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -41,16 +42,25 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    proxy:true
+  },
+  proxy: {
+    '/api/':{
+      target: 'https://us-central1-mercurius-7777.cloudfunctions.net/mercuriusApi/v1/',
+      pathRewrite: {'^/api/': ''}
+    }
+  },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: false,
+      dark: true,
       themes: {
         light: {
           primary: '#3949AB',
@@ -63,8 +73,8 @@ export default {
         },
         dark: {
           primary: '#3949AB',
-          accent: '#EF4135',
-          secondary: '#EF4135',
+          accent: '#B71C1C',
+          secondary: '#00227b',
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
