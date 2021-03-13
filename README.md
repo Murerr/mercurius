@@ -10,6 +10,7 @@ $ npm install
 $ npm run dev
 
 # serve with HEROKU at localhost:5000
+$ npm run build
 $ heroku local web
 
 # build for production and launch server
